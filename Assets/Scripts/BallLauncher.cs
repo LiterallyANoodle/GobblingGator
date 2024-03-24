@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    // signals 
+    void OnEnable() {
+        InputHandler.OnLeftPressed += OnLeftPressed;
+        InputHandler.OnRightPressed += OnRightPressed;
+        InputHandler.OnSpacePressed += OnSpacePressed;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void OnDisable() {
+        InputHandler.OnLeftPressed -= OnLeftPressed;
+        InputHandler.OnRightPressed -= OnRightPressed;
+        InputHandler.OnSpacePressed -= OnSpacePressed;
+    }
+
+    void OnLeftPressed() {
+        print("Left!");
+    }
+    void OnRightPressed() {
+        print("Right!");
+    }
+    void OnSpacePressed() {
+        print("Space!");
     }
 }
