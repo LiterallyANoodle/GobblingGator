@@ -5,6 +5,8 @@ using UnityEngine;
 public class PitBox : MonoBehaviour
 {
     void OnTriggerEnter(Collider other) {
-        print(other);
+        if (other.name == "Ball") {
+            other.transform.position = other.transform.parent.Find("Respawn").transform.position; // goofy ahh hierarchy....
+        }
     }
 }

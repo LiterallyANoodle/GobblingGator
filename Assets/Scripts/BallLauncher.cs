@@ -8,7 +8,7 @@ public class Launcher : MonoBehaviour
 {
 
     private Rigidbody rigidBody;
-    private const float downIncrement = 10f;
+    private const float downIncrement = 300f;
     private float downForce;
     private bool springPulling;
 
