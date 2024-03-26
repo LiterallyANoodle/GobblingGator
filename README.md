@@ -60,4 +60,6 @@ When a hit is detected, a sound is played, and a signal is emitted. The signal i
 
 I did not anticipate colliders needing to be convex, so re-exporting many pieces of the frame was tedious. 
 
+### Rotation
+
 Unity seems to treat position and rotation globally than Godot, which is where I am coming from. In Godot, all transforms and other world-related components in scripting are local by default. Conversely, in Unity, the opposite is true. To get global rotation in degrees, you ask for `transform.eulerAngles`, and to get the local rotation, you ask for `transform.localEulerAngles`. This caused me a lot of grief while scripting the paddles. 
