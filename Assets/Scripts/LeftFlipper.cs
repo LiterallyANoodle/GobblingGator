@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,31 +9,43 @@ public class LeftFlipper : MonoBehaviour
 
     private bool isUp = false;
     private const float turnSpeed = 5f;
-    private const float downAngle = 45f;
-    private const float upAngle = 0f;
+    public int duration = 3;
+    private int counter = 0;
+    private Vector3 downAngle = new Vector3(-90f, 45f, 0f);
+    private Vector3 upAngle = new Vector3(-90f, 0f, 0f);
+    private Rigidbody rigidBody;
 
     // signals 
     void OnEnable() {
         InputHandler.OnLeftPressed += OnLeftPressed;
+        InputHandler.OnLeftReleased += OnLeftReleased;
     }
 
     void OnDisable() {
         InputHandler.OnLeftPressed -= OnLeftPressed;
+        InputHandler.OnLeftReleased -= OnLeftReleased;
     }
 
-    // Update is called once per frame
+    void Start() {
+        rigidBody = GetComponent<Rigidbody>();
+    }
+
     void FixedUpdate()
     {
+        // if (isUp) {
+        //     counter += 1;
+        //     counter = Math.Clamp(counter, 0, duration);
+        //     float t = (float)counter / duration;
+        //     this.transform.localEulerAngles = Vector3.Lerp(downAngle, upAngle, t);
+        // } else {
+        //     counter -= 1;
+        //     counter = Math.Clamp(counter, 0, duration);
+        //     float t = (float)counter / duration;
+        //     this.transform.localEulerAngles = Vector3.Lerp(downAngle, upAngle, t);
+        // }
         if (isUp) {
-            if (this.transform.rotation.y != upAngle) {
-                this.transform.Rotate(new Vector3(0, -turnSpeed, 0));
-            }
-            Mathf.Clamp(this.transform.rotation.y, upAngle, downAngle); // ensure doesn't exceed 0
-        } else {
-            if (this.transform.rotation.y != downAngle) {
-                this.transform.Rotate(new Vector3(0, turnSpeed, 0));
-            }
-            Mathf.Clamp(this.transform.rotation.y, upAngle, downAngle); // ensure doesn't exceed 0
+            // add torque, spring joint will reset it
+            rigidBody.AddRelativeTorque(new Vector3(0, 0, -100000000), ForceMode.Force);
         }
     }
 

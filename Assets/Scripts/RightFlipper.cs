@@ -9,10 +9,11 @@ public class RightFlipper : MonoBehaviour
 
     private bool isUp = false;
     private const float turnSpeed = 5f;
-    private const int duration = 20;
+    public int duration = 3;
     private int counter = 0;
-    private readonly Vector3 downAngle = new Vector3(-90f, -45f, 0f);
-    private readonly Vector3 upAngle = new Vector3(-90f, 0f, 0f);
+    private Vector3 downAngle = new Vector3(-90f, -45f, 0f);
+    private Vector3 upAngle = new Vector3(-90f, 0f, 0f);
+    private Rigidbody rigidBody;
 
     // signals 
     void OnEnable() {
@@ -25,35 +26,26 @@ public class RightFlipper : MonoBehaviour
         InputHandler.OnRightReleased -= OnRightReleased;
     }
 
+    void Start() {
+        rigidBody = GetComponent<Rigidbody>();
+    }
+
     void FixedUpdate()
     {
-        // if (this.isUp) {
-        //     if (this.transform.eulerAngles.y != upAngle) {
-        //         currentAngle += turnSpeed;
-        //         currentAngle = currentAngle % 360f;
-        //     }
-        //     // currentAngle = Mathf.Clamp(this.transform.eulerAngles.y, downAngle, upAngle); // ensure doesn't exceed 0
-        //     this.transform.eulerAngles = new Vector3(-90f, currentAngle, 0f);
+        // if (isUp) {
+        //     counter += 1;
+        //     counter = Math.Clamp(counter, 0, duration);
+        //     float t = (float)counter / duration;
+        //     this.transform.localEulerAngles = Vector3.Lerp(downAngle, upAngle, t);
         // } else {
-        //     if (this.transform.eulerAngles.y != downAngle) {
-        //         currentAngle -= turnSpeed;
-        //         currentAngle = currentAngle % 360f;
-        //     }
-        //     // currentAngle = Mathf.Clamp(this.transform.eulerAngles.y, downAngle, upAngle); // ensure doesn't exceed 0
-        //     this.transform.eulerAngles = new Vector3(-90f, currentAngle, 0f);
+        //     counter -= 1;
+        //     counter = Math.Clamp(counter, 0, duration);
+        //     float t = (float)counter / duration;
+        //     this.transform.localEulerAngles = Vector3.Lerp(downAngle, upAngle, t);
         // }
-        // print(currentAngle);
-
         if (isUp) {
-            // this.transform.eulerAngles = new Vector3(-90, upAngle, 0);
-            counter += 1;
-            counter = Math.Clamp(counter, 0, duration);
-            this.transform.eulerAngles = Vector3.Lerp(downAngle, upAngle, counter / duration);
-
-        } else {
-            counter -= 1;
-            counter = Math.Clamp(counter, 0, duration);
-            this.transform.eulerAngles = Vector3.Lerp(downAngle, upAngle, counter / duration);
+            // add torque, spring joint will reset it
+            rigidBody.AddRelativeTorque(new Vector3(0, 0, 100000000), ForceMode.Force);
         }
     }
 
